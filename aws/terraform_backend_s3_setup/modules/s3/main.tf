@@ -1,23 +1,29 @@
-# s3.tf to create S3 bucket and some configurations
-# 1. Create an S3 bucket
-# 2. Define Access Control List (ACL) for the S3 bucket
-# 3. Enable versioning for the S3 bucket
-# 4. Create a KMS key
-# 5. Define server-side encryption configuration for the S3 bucket
+terraform {
+  required_providers {
+    aws = {
+        source = "hashicorp/aws"
+        version = "~> 5.0" 
+    }
+  }
+}
 
+# Create AWS S3 bucket to store terraform state
+# 1. Create S3 bucket
+# 2. Enable versioning
+# 3. Enable server-side encryption
+# 4. Enable ACL
 
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = "${var.project}-s3-backend"
   force_destroy = false
-  tags   = local.tags
 }
 
-resource "aws_s3_bucket_acl" "s3_bucket" {
+resource "aws_s3_bucket_acl" "aws_s3_bucket_acl" {
   bucket = aws_s3_bucket.s3_bucket.id
   acl = "private"
 }
 
-resource "aws_s3_bucket_versioning" "s3_bucket" {
+resource "aws_s3_bucket_versioning" "aws_s3_bucket_versioning" {
   bucket = aws_s3_bucket.s3_bucket.id
   versioning_configuration {
     status = "Enabled"
@@ -25,7 +31,7 @@ resource "aws_s3_bucket_versioning" "s3_bucket" {
 }
 
 resource "aws_kms_key" "kms_key" {
-  tags = local.tags
+  description = "KMS key for TF backend"
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "name" {
@@ -36,4 +42,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "name" {
         sse_algorithm     = "aws:kms"
         }
     }
+}
+
+output "bucket_arn" {
+  value = aws_s3_bucket.s3_bucket.arn
 }
