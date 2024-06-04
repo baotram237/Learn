@@ -22,7 +22,7 @@
 # Use Terraform to create the DynamoDB table to store the Terraform state
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table
 
-resource "aws_dynamodb_table" "dynamodb_table_draft" {
+resource "aws_dynamodb_table" "dynamodb_table" {
   name = "${var.project}-s3-backend"
   hash_key = "LockID"
   billing_mode = "PAY_PER_REQUEST"
@@ -33,7 +33,7 @@ resource "aws_dynamodb_table" "dynamodb_table_draft" {
     }
 }
 
-resource "aws_dynamodb_table" "dynamodb_table" {
+resource "aws_dynamodb_table" "dynamodb_table_test" {
   name = "${var.project}-s3-backend-lock-state"
   hash_key = "LockID"
   billing_mode = "PAY_PER_REQUEST"

@@ -62,8 +62,9 @@ output "dynamodb_table_name" {
 data "aws_s3_bucket" "s3_bucket" {
   bucket = "${var.project}-s3-backend"
 }
+
 data "aws_dynamodb_table" "dynamodb_table" {
-  name = "${var.project}-s3-backend"
+  name = "trambao-lab-s3-backend"
 }
 
 module "iam" {
