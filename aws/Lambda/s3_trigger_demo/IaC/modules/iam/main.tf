@@ -27,8 +27,12 @@ resource "aws_iam_role" "s3_trigger_role" {
 # aws_iam_policy_attachment
 resource "aws_iam_policy_attachment" "aws_iam_policy_attachment" {
     name = "iam_user_attachment"
-    users = ["trambao"]
+    users = [var.user_name]
     roles = aws_iam_role.s3_trigger_role.managed_policy_arns
     policy_arn = aws_iam_policy.s3_trigger_policy.arn
 }
-
+# output arn
+output "s3_trigger_role_arn" {
+  description = "The ARN of the s3 trigger role"
+  value       = aws_iam_role.s3_trigger_role.arn
+}

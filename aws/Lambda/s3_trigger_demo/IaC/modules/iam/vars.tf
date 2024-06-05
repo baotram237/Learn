@@ -7,3 +7,7 @@ variable "region" {
   description = "the region"
 }
 
+variable "user_name" {
+  default = "trambao"
+  description = "iam user"
+}
